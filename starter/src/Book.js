@@ -1,5 +1,4 @@
 import ShelfChanger from "./ShelfChanger";
-import { useEffect } from "react";
 const Book = ({ book, changeCategory }) => {
   // useEffect(() => {
   //   return () => {
