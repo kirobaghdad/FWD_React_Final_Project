@@ -1,10 +1,22 @@
 import { Link } from "react-router-dom";
-import InputField from "./InputField";
-import SearchResults from "./SearchResults";
 import { useState } from "react";
-const Search = ({ getBooks, changeCategory }) => {
-  const [search, setSearch] = useState("");
+import * as BooksAPI from "./BooksAPI";
+import BooksList from "./BooksList";
+
+const Search = ({ read, currentlyReading, wantToRead, changeCategory }) => {
   const [result, setResult] = useState([]);
+
+  const getSearchResult = async (search) => {
+    const res = await BooksAPI.search(search, 20);
+    return res;
+  };
+
+  const searchBooks = (search) => {
+    getSearchResult(search).then((res) => {
+      setResult(res);
+      console.log(res);
+    });
+  };
 
   return (
     <div className="search-books">
@@ -12,15 +24,41 @@ const Search = ({ getBooks, changeCategory }) => {
         <Link className="close-search" to="/">
           Close
         </Link>
-        <InputField
-          search={search}
-          setSearch={setSearch}
-          setResult={setResult}
-        />
+
+        <div className="search-books-input-wrapper">
+          <input
+            type="text"
+            onChange={(e) => {
+              searchBooks(e.target.value);
+            }}
+            placeholder="Search by title, author, or ISBN"
+          />
+        </div>
       </div>
-      <SearchResults result={result} changeCategory={changeCategory} />
+
+      <div className="search-books-results">
+        {Array.isArray(result) && (
+          <BooksList
+            books={result}
+            changeCategory={changeCategory}
+            read={read}
+            currentlyReading={currentlyReading}
+            wantToRead={wantToRead}
+          />
+        )}
+      </div>
     </div>
   );
 };
 
 export default Search;
+
+/*
+result.map((book) => {
+              return (
+                <li key={book.id}>
+                  <Book book={book} changeCategory={changeCategory} />
+                </li>
+              );
+            })
+            */

@@ -29,15 +29,13 @@ function App() {
     });
   }, []);
 
-  const changeCategory = (book, newCategory) => {
-    BooksAPI.update(book, newCategory);
-
+  const changeCategory = (book, shelf, newCategory) => {
     //Removing the book from the old category
-    if (book.shelf === "currentlyReading") {
+    if (shelf === "currentlyReading") {
       setCurrentlyReading(currentlyReading.filter((b) => book.id !== b.id));
-    } else if (book.shelf === "wantToRead") {
+    } else if (shelf === "wantToRead") {
       setWantToRead(wantToRead.filter((b) => book.id !== b.id));
-    } else if (book.shelf === "read") {
+    } else if (shelf === "read") {
       setRead(read.filter((b) => book.id !== b.id));
     }
 
@@ -49,7 +47,8 @@ function App() {
     } else if (newCategory === "read") {
       setRead([...read, book]);
     }
-    book.shelf = newCategory;
+    if (book.shelf !== "none") book.shelf = newCategory;
+    BooksAPI.update(book, newCategory);
   };
 
   return (
@@ -89,7 +88,15 @@ function App() {
       />
       <Route
         path="search"
-        element={<Search getBooks={getBooks} changeCategory={changeCategory} />}
+        element={
+          <Search
+            className="search"
+            currentlyReading={currentlyReading}
+            read={read}
+            wantToRead={wantToRead}
+            changeCategory={changeCategory}
+          />
+        }
       />
     </Routes>
   );

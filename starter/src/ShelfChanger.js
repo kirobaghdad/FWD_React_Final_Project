@@ -1,4 +1,4 @@
-const ShelfChanger = ({ book, changeCategory }) => {
+const ShelfChanger = ({ book, changeCategory, shelf }) => {
   const options = [
     {
       value: "read",
@@ -23,14 +23,12 @@ const ShelfChanger = ({ book, changeCategory }) => {
       <select
         onChange={(e) => {
           if (e.target.value !== book.shelf)
-            changeCategory(book, e.target.value);
+            changeCategory(book, shelf, e.target.value);
         }}
-        defaultValue={book.shelf}
+        defaultValue={shelf}
         id="drop"
       >
-        <option value="none" disabled>
-          Move to...
-        </option>
+        <option disabled>Move to...</option>
 
         {options.map((option) => {
           return (
