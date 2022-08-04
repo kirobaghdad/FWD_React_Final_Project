@@ -1,6 +1,6 @@
 import Book from "./Book";
 
-const BooksList = ({
+const BookList = ({
   books,
   title,
   changeCategory,
@@ -10,19 +10,17 @@ const BooksList = ({
 }) => {
   const getShelf = (book) => {
     var bookShelf;
-    read.map((b) => {
-      if (b.title === book.title) {
-        bookShelf = "read";
-      }
-    });
 
-    wantToRead.map((b) => {
-      if (b.title === book.title) bookShelf = "wantToRead";
-    });
+    for (let i = 0; i < read.length; i++)
+      if (book.title === read[i].title) bookShelf = "read";
 
-    currentlyReading.map((b) => {
-      if (b.title === book.title) bookShelf = "currentlyReading";
-    });
+    for (let i = 0; i < wantToRead.length; i++)
+      if (book.title === wantToRead[i].title) bookShelf = "wantToRead";
+
+    for (let i = 0; i < currentlyReading.length; i++)
+      if (book.title === currentlyReading[i].title)
+        bookShelf = "currentlyReading";
+
     if (bookShelf) return bookShelf;
     else return "none";
   };
@@ -52,4 +50,4 @@ const BooksList = ({
   );
 };
 
-export default BooksList;
+export default BookList;

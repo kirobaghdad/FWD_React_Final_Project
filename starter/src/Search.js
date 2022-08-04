@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as BooksAPI from "./BooksAPI";
-import BooksList from "./BooksList";
+import BookList from "./BookList";
 
 const Search = ({ read, currentlyReading, wantToRead, changeCategory }) => {
   const [result, setResult] = useState([]);
@@ -12,21 +12,27 @@ const Search = ({ read, currentlyReading, wantToRead, changeCategory }) => {
   };
 
   const searchBooks = (search) => {
-    getSearchResult(search).then((res) => {
-      setResult(res);
-      console.log(res);
-    });
+    getSearchResult(search)
+      .then((res) => {
+        setResult(res);
+      })
+      .catch(() => {
+        setResult([]);
+      });
   };
 
+  useEffect(() => {
+    document.getElementById("search-books-input").focus();
+  });
   return (
     <div className="search-books">
       <div className="search-books-bar">
         <Link className="close-search" to="/">
           Close
         </Link>
-
         <div className="search-books-input-wrapper">
           <input
+            id="search-books-input"
             type="text"
             onChange={(e) => {
               searchBooks(e.target.value);
@@ -38,7 +44,7 @@ const Search = ({ read, currentlyReading, wantToRead, changeCategory }) => {
 
       <div className="search-books-results">
         {Array.isArray(result) && (
-          <BooksList
+          <BookList
             books={result}
             changeCategory={changeCategory}
             read={read}
@@ -52,13 +58,3 @@ const Search = ({ read, currentlyReading, wantToRead, changeCategory }) => {
 };
 
 export default Search;
-
-/*
-result.map((book) => {
-              return (
-                <li key={book.id}>
-                  <Book book={book} changeCategory={changeCategory} />
-                </li>
-              );
-            })
-            */

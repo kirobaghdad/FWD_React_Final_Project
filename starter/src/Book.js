@@ -1,13 +1,7 @@
 import ShelfChanger from "./ShelfChanger";
-import background from "./icons/download.jpeg";
+import background from "./icons/image-not-found.png";
 
 const Book = ({ book, changeCategory, shelf }) => {
-  // useEffect(() => {
-  //   return () => {
-  //     console.log("Kiro");
-  //   };
-  // }, []);
-
   return (
     <div className="book">
       <div className="book-top">
@@ -30,7 +24,16 @@ const Book = ({ book, changeCategory, shelf }) => {
         />
       </div>
       <div className="book-title">{book.title}</div>
-      <div className="book-authors">{book.author}</div>
+      <div>
+        {book.authors
+          ? book.authors.map((author, index) => (
+              <span key={author} className="book-authors">
+                {author}
+                {index + 1 < book.authors.length ? ", " : ""}
+              </span>
+            ))
+          : ""}
+      </div>
     </div>
   );
 };
